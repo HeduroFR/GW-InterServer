@@ -7,6 +7,13 @@ const dev = process.env.NODE_ENV !== 'production';
 
 @ApplyOptions<Listener.Options>({ once: true })
 export class UserEvent extends Listener {
+	public constructor(context: Listener.LoaderContext, options: Listener.Options) {
+		super(context, {
+			...options,
+			event: 'clientReady'
+		});
+	}
+
 	private readonly style = dev ? yellow : blue;
 
 	public override run() {

@@ -54,8 +54,31 @@ export class InterServerListener extends Listener {
 					}
 				}
 
+				let referencedDistMessage,
+					messageContent = message.content;
+
+				if (message.reference) {
+					try {
+						let referencedMessage = message.channel.messages.cache.get(message.reference.messageId!);
+						if (!referencedMessage) {
+							referencedMessage = await message.channel.messages.fetch(message.reference.messageId!);
+						}
+
+						referencedDistMessage = (await sanctuaireChannel.messages.fetch()).filter((msg) =>
+							msg.content.includes(referencedMessage.id)
+						);
+
+						if (referencedDistMessage) {
+							messageContent =
+								`> **${referencedMessage.author.displayName} :**\n> ` + referencedMessage.content + `\n⮩ ` + message.content;
+						}
+					} catch (error) {
+						console.error('Failed to fetch the referenced message:', error);
+					}
+				}
+
 				await webhook.send({
-					content: message.content,
+					content: messageContent,
 					username: `GreenWoods - ${message.author.displayName}`,
 					avatarURL: message.author.displayAvatarURL(),
 					files: files.length > 0 ? files : undefined,
@@ -85,8 +108,31 @@ export class InterServerListener extends Listener {
 					}
 				}
 
+				let referencedDistMessage,
+					messageContent = message.content;
+
+				if (message.reference) {
+					try {
+						let referencedMessage = message.channel.messages.cache.get(message.reference.messageId!);
+						if (!referencedMessage) {
+							referencedMessage = await message.channel.messages.fetch(message.reference.messageId!);
+						}
+
+						referencedDistMessage = (await greenwoodsChannel.messages.fetch()).filter((msg) =>
+							msg.content.includes(referencedMessage.id)
+						);
+
+						if (referencedDistMessage) {
+							messageContent =
+								`> **${referencedMessage.author.displayName} :**\n> ` + referencedMessage.content + `\n⮩ ` + message.content;
+						}
+					} catch (error) {
+						console.error('Failed to fetch the referenced message:', error);
+					}
+				}
+
 				await webhook.send({
-					content: message.content,
+					content: messageContent,
 					username: `Sanctuaire - ${message.author.displayName}`,
 					avatarURL: message.author.displayAvatarURL(),
 					files: files.length > 0 ? files : undefined,
