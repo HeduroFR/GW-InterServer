@@ -2,7 +2,7 @@
 #    Base Stage    #
 # ================ #
 
-FROM oven/bun:latest as base
+FROM oven/bun:latest AS base
 
 WORKDIR /usr/src/app
 
@@ -23,7 +23,7 @@ ENTRYPOINT ["dumb-init", "--"]
 #   Builder Stage  #
 # ================ #
 
-FROM base as builder
+FROM base AS builder
 
 ENV NODE_ENV="development"
 

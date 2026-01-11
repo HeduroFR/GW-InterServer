@@ -70,7 +70,10 @@ export class InterServerListener extends Listener {
 
 						if (referencedDistMessage) {
 							messageContent =
-								`> **${referencedMessage.author.displayName} :**\n> ` + referencedMessage.content + `\n⮩ ` + message.content;
+								`> **${referencedMessage.author.displayName} :**\n> ` +
+								cleanMessageContent(referencedMessage.content || '') +
+								`\n⮩ ` +
+								message.content;
 						}
 					} catch (error) {
 						console.error('Failed to fetch the referenced message:', error);
@@ -124,7 +127,10 @@ export class InterServerListener extends Listener {
 
 						if (referencedDistMessage) {
 							messageContent =
-								`> **${referencedMessage.author.displayName} :**\n> ` + referencedMessage.content + `\n⮩ ` + message.content;
+								`> **${referencedMessage.author.displayName} :**\n> ` +
+								cleanMessageContent(referencedMessage.content || '') +
+								`\n⮩ ` +
+								message.content;
 						}
 					} catch (error) {
 						console.error('Failed to fetch the referenced message:', error);
@@ -142,3 +148,10 @@ export class InterServerListener extends Listener {
 		}
 	}
 }
+
+const cleanMessageContent = (content: string): string => {
+	if (content.includes('⮩')) {
+		return content.split('⮩')[1].trim();
+	}
+	return content;
+};
